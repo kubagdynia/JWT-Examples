@@ -4,6 +4,7 @@ using JwtExamples.Core.Configuration;
 using JwtExamples.Core.Middlewares;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace JwtExamples.Core.Extensions;
@@ -15,8 +16,11 @@ public static class ServiceCollectionExtensions
         IServiceCollection services = builder.Services;
 
         services.AddHttpContextAccessor();
+        
+        var ssoSettingsSection = builder.Configuration.GetSection(SsoSettings.SectionName);
+        services.Configure<SsoSettings>(ssoSettingsSection);
 
-        SsoSettings settings = builder.GetSsoSettings();
+        SsoSettings settings = GetSsoSettings(builder);
         
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
@@ -64,10 +68,14 @@ public static class ServiceCollectionExtensions
         return app;
     }
     
-    private static SsoSettings GetSsoSettings(this IHostApplicationBuilder builder)
+    private static SsoSettings GetSsoSettings(IHostApplicationBuilder builder)
     {
-        SsoSettings settings = builder.Configuration.GetSection(SsoSettings.SectionName).Get<SsoSettings>()
-            ?? throw new InvalidOperationException($"Missing configuration section: {SsoSettings.SectionName}");
+        var ssoSettingsSection = builder.Configuration.GetSection(SsoSettings.SectionName);
+        builder.Services.Configure<SsoSettings>(ssoSettingsSection);
+
+        SsoSettings settings =
+            ssoSettingsSection.Get<SsoSettings>() ?? throw new InvalidOperationException(
+                $"Missing configuration section '{SsoSettings.SectionName}'.");
         
         return settings;
     }

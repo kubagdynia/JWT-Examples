@@ -1,6 +1,6 @@
 namespace JwtExamples.Core.Configuration;
 
-public record JwtSettings
+internal record JwtSettings
 {
     public const string SectionName = "JwtSettings";
     

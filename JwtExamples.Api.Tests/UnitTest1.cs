@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
+using FluentAssertions;
 using Microsoft.IdentityModel.Tokens;
 
 namespace JwtExamples.Api.Tests;
@@ -34,57 +35,55 @@ public class Tests
     }
 
     [Test]
-    public void Test1()
+    public async Task Test1()
     {
         // Arrange
         using var client = _application.CreateClient();
         
         // Act
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiSmFuIEtvd2Fsc2tpIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiamFuLmtvd2Fsc2tpQGV4YW1wbGUuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MzUzODEzNTQsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwMDEiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxIn0.Rm7KcWvgV46EJ9dfA1M8YSpQ_h63yFI52nDhp7bephw");
-        var response = client.GetAsync("api/Test/hello-world").Result;
-        
-        //var response2 = client.GetAsync("api/Test/hello-world").Result;
+        var response = await client.GetAsync("api/Test/hello-world");
         
         // Assert
         response.EnsureSuccessStatusCode();
         
-        var content = response.Content.ReadAsStringAsync().Result;
-        
-        Assert.Pass();
+        var content = await response.Content.ReadAsStringAsync();
+
+        true.Should().BeTrue();
     }
     
     [Test]
-    public void Test11()
+    public async Task Test11()
     {
         // Arrange
         using var client = _application.CreateClient();
         
         // Act
         //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiSmFuIEtvd2Fsc2tpIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiamFuLmtvd2Fsc2tpQGV4YW1wbGUuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MzUzODEzNTQsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwMDEiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxIn0.Rm7KcWvgV46EJ9dfA1M8YSpQ_h63yFI52nDhp7bephw");
-        var response = client.GetAsync("api/Test/hello-world2").Result;
+        var response = await client.GetAsync("api/Test/hello-world2");
         
         // Assert
         response.EnsureSuccessStatusCode();
         
-        var content = response.Content.ReadAsStringAsync().Result;
+        var content = await response.Content.ReadAsStringAsync();
         
         Assert.Pass();
     }
     
     [Test]
-    public void Test13()
+    public async Task Test13()
     {
         // Arrange
         using var client = _application.CreateClient();
         
         // Act
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiSmFuIEtvd2Fsc2tpIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiamFuLmtvd2Fsc2tpQGV4YW1wbGUuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MzUzODEzNTQsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwMDEiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxIn0.Rm7KcWvgV46EJ9dfA1M8YSpQ_h63yFI52nDhp7bephw");
-        var response = client.GetAsync("api/Test/hello-world3").Result;
+        var response = await client.GetAsync("api/Test/hello-world3");
         
         // Assert
         response.EnsureSuccessStatusCode();
         
-        var content = response.Content.ReadAsStringAsync().Result;
+        var content = await response.Content.ReadAsStringAsync();
         
         Assert.Pass();
     }

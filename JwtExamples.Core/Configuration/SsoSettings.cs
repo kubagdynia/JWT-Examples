@@ -1,6 +1,6 @@
 namespace JwtExamples.Core.Configuration;
 
-public record SsoSettings
+internal record SsoSettings
 {
     public const string SectionName = "SsoSettings";
     
