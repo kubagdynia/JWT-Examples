@@ -1,6 +1,6 @@
 ﻿namespace JwtExamples.Core;
 
-public class Class1
+public class lass1
 {
 
 }
