@@ -1,8 +1,14 @@
 using System.Security.Claims;
+using System.Text.Json;
+using JwtExamples.Core.Configuration;
+using JwtExamples.Core.Exceptions;
+using JwtExamples.Core.Models;
+using JwtExamples.Core.Serialization;
+using Microsoft.Extensions.Options;
 
 namespace JwtExamples.Core;
 
-internal sealed class RequestContext(HttpContext httpContext) : IRequestContext
+internal sealed class RequestContext(HttpContext httpContext, IOptionsSnapshot<SsoSettings>? settings) : IRequestContext
 {
     private string _myName;
     public string MyName => _myName;
@@ -35,6 +41,24 @@ internal sealed class RequestContext(HttpContext httpContext) : IRequestContext
         if (httpContext.User.Identity is ClaimsIdentity claimsIdentity)
         {
             claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, "SuperUser335"));
+        }
+        
+        if (settings?.Value.MockSession.Enabled == true)
+        {
+            if (File.Exists(settings?.Value.MockSession.FilePath))
+            {
+                var json = File.ReadAllText(settings?.Value.MockSession.FilePath!);
+                try
+                {
+                    var userSession = JsonSerializer.Deserialize<UserSession>(json, JsonSettings.JsonEnumOptions);
+
+                }
+                catch (JsonException ex)
+                {
+                    throw new SsoJsonException("Error deserializing JSON input.", ex);
+                }
+                
+            }
         }
         
         // Do nothing

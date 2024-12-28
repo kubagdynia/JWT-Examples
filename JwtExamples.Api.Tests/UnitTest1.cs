@@ -22,7 +22,12 @@ public class Tests
         var testConfig = new Dictionary<string, string?>
         {
             {"TestSso:TestKey", "TestValue"},
-            
+            {"SsoSettings:JwtSettings:Secret", "secret-key-secret-key-secret-key-secret-key-secret-key-15321-15321-15321-15321"},
+            {"SsoSettings:JwtSettings:Issuer", "https://localhost:5001"},
+            {"SsoSettings:JwtSettings:Audience", "https://localhost:5001"},
+            {"SsoSettings:JwtSettings:Authority", "https://localhost:5001"},
+            {"SsoSettings:MockSession:Enabled", "true"},
+            {"SsoSettings:MockSession:FilePath", @"D:\Dev\MyProjects\JWT-Examples\data\mock-session.json"}
         };
         
         _application = new CustomWebApplicationFactory<Program>(testConfig);

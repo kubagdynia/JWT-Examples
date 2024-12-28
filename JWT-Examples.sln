@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtExamples.Api", "JwtExamp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtExamples.Api.Tests", "JwtExamples.Api.Tests\JwtExamples.Api.Tests.csproj", "{0F6755E8-68B9-4390-A3C4-ABE5B1C32ADF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtExamples.Core.Tests", "JwtExamples.Core.Tests\JwtExamples.Core.Tests.csproj", "{37F1DD33-7B46-43AC-91C2-6BA47CDC5203}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{0F6755E8-68B9-4390-A3C4-ABE5B1C32ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F6755E8-68B9-4390-A3C4-ABE5B1C32ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F6755E8-68B9-4390-A3C4-ABE5B1C32ADF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37F1DD33-7B46-43AC-91C2-6BA47CDC5203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37F1DD33-7B46-43AC-91C2-6BA47CDC5203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37F1DD33-7B46-43AC-91C2-6BA47CDC5203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37F1DD33-7B46-43AC-91C2-6BA47CDC5203}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
