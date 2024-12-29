@@ -2,6 +2,7 @@ using System.Text;
 using JwtExamples.Core.Claims;
 using JwtExamples.Core.Configuration;
 using JwtExamples.Core.Middlewares;
+using JwtExamples.Core.Providers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
@@ -50,6 +51,8 @@ public static class ServiceCollectionExtensions
             return httpContext?.Items[nameof(RequestContext)] as IRequestContext ?? throw new InvalidOperationException("RequestContext is not available.");
         });
         
+        services.AddSingleton<CoreDataProviderFactory>();
+        services.AddScoped<ICoreDataProvider>(sp => sp.GetRequiredService<CoreDataProviderFactory>().Create());
         
         services.AddScoped<ITestClass, TestClass>();
         
