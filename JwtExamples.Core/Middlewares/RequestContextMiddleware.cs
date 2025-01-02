@@ -2,12 +2,15 @@ using System.Security.Claims;
 
 namespace JwtExamples.Core.Middlewares;
 
-internal class RequestContextMiddleware(RequestDelegate next, IServiceProvider serviceProvider, IRequestContextFactory requestContextFactory)
+internal class RequestContextMiddleware(RequestDelegate next, IServiceProvider serviceProvider)
 {
     public async Task InvokeAsync(HttpContext context)
     {
         if (!context.Items.ContainsKey(nameof(RequestContext)))
         {
+            using var scope = serviceProvider.CreateScope();
+            var requestContextFactory = scope.ServiceProvider.GetRequiredService<IRequestContextFactory>();
+            
             var requestContext = requestContextFactory.Create(context);
             context.Items[nameof(RequestContext)] = requestContext;
 
