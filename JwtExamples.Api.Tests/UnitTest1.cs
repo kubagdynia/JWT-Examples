@@ -24,7 +24,7 @@ public class Tests
             {"TestSso:TestKey", "TestValue"},
             {"SsoSettings:JwtSettings:Secret", "secret-key-secret-key-secret-key-secret-key-secret-key-15321-15321-15321-15321"},
             {"SsoSettings:JwtSettings:Issuer", "https://localhost:5001"},
-            {"SsoSettings:JwtSettings:Audience", "https://localhost:5001"},
+            //{"SsoSettings:JwtSettings:Audience", "https://localhost:5001"},
             {"SsoSettings:JwtSettings:Authority", "https://localhost:5001"},
             {"SsoSettings:MockSession:Enabled", "true"},
             {"SsoSettings:MockSession:FilePath", @"D:\Dev\MyProjects\JWT-Examples\data\mock-session.json"}
@@ -45,8 +45,24 @@ public class Tests
         // Arrange
         using var client = _application.CreateClient();
         
+        List<Claim> customClaims =
+        [
+            new(ClaimTypes.Name, "Jan Kowalski"),
+            new(ClaimTypes.Email, "jan.kowalski@example.com"),
+            new(ClaimTypes.Role, "Admin")
+        ];
+        
+        var token = CteateJwtToken(
+            securityKey: "secret-key-secret-key-secret-key-secret-key-secret-key-15321-15321-15321-15321",
+            issuer: "https://localhost:5001",
+            audience: "https://localhost:5001",
+            sub: "User:11",
+            expires: DateTime.UtcNow.AddDays(7),
+            iat: DateTimeOffset.UtcNow,
+            customClaims: customClaims);
+        
         // Act
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiSmFuIEtvd2Fsc2tpIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiamFuLmtvd2Fsc2tpQGV4YW1wbGUuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3MzY0Mzk4MjgsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjUwMDEiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo1MDAxIn0.zIMavCRyoY_TJhWPIy0MrvHsoTPRTMSggHpmrhfdqtI");
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         var response = await client.GetAsync("api/Test/hello-world");
         
         // Assert
@@ -98,30 +114,54 @@ public class Tests
     {
         List<Claim> claims =
         [
-            new Claim(ClaimTypes.Name, "Jan Kowalski"),
-            new Claim(ClaimTypes.Email, "jan.kowalski@example.com"),
-            new Claim(ClaimTypes.Role, "Admin")
+            new(ClaimTypes.Name, "Jan Kowalski"),
+            new(ClaimTypes.Email, "jan.kowalski@example.com"),
+            new(ClaimTypes.Role, "Admin")
         ];
         
-        var identity = new ClaimsIdentity(claims, "Bearer1");
+        var identity = new ClaimsIdentity(claims, "Bearer");
         
         var principal = new ClaimsPrincipal(identity);
         
-        var encodedToken = CteateJwtToken(claims);
+        var encodedToken = CteateJwtToken(
+            securityKey: "secret-key-secret-key-secret-key-secret-key-secret-key-15321-15321-15321-15321",
+            issuer: "https://localhost:5001",
+            audience: "https://localhost:5001",
+            sub: null,
+            expires: DateTime.UtcNow.AddDays(7),
+            iat: DateTimeOffset.UtcNow,
+            claims);
         
         Assert.Pass();
     }
     
-    private string CteateJwtToken(List<Claim> claims)
+    private string CteateJwtToken(string securityKey, string? issuer, string? audience, string? sub, DateTime? expires, DateTimeOffset? iat, List<Claim>? customClaims)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secret-key-secret-key-secret-key-secret-key-secret-key-15321-15321-15321-15321"));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        List<Claim> claims = [];
+        
+        if (sub != null)
+        {
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, sub));
+        }
+        
+        if (iat != null)
+        {
+            claims.Add(new Claim(JwtRegisteredClaimNames.Iat, iat.Value.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64));
+        }
+        
+        if (customClaims != null)
+        {
+            claims.AddRange(customClaims);
+        }
         
         var token = new JwtSecurityToken(
-            issuer: "https://localhost:5001",
-            audience: "https://localhost:5001",
+            issuer: issuer,
+            audience: audience,
             claims: claims,
-            expires: DateTime.Now.AddDays(7),
+            expires: expires,
             signingCredentials: creds
         );
         
