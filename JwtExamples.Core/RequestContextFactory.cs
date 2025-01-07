@@ -10,6 +10,11 @@ internal class RequestContextFactory(IServiceProvider serviceProvider, IOptionsS
         if (httpContext.User.Identity?.IsAuthenticated == true)
         {
             var requestContext = new RequestContext(httpContext, settings);
+            if (requestContext is IInternalRequestContext internalRequestContext)
+            {
+                // internal request context initialization
+                internalRequestContext.Initialize2(requestContext);
+            }
             requestContext.Initialize();
             return requestContext;
         }

@@ -13,6 +13,8 @@ public class HasGrantsAttribute(params string[] grants) : Attribute, IAuthorizat
 
     public void OnAuthorization(AuthorizationFilterContext context)
     {
+        var requestContext2 = context.HttpContext.RequestServices.GetRequiredService<IRequestContext>();
+        
         if (Grants.Length == 0)
         {
             // No grants specified, allow access

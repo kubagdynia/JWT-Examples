@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace JwtExamples.Core;
 
-internal sealed class RequestContext(HttpContext httpContext, IOptionsSnapshot<SsoSettings>? settings) : IRequestContext
+internal sealed class RequestContext(HttpContext httpContext, IOptionsSnapshot<SsoSettings>? settings) : IRequestContext, IInternalRequestContext
 {
     private string _myName;
     public string MyName => _myName;
@@ -63,5 +63,10 @@ internal sealed class RequestContext(HttpContext httpContext, IOptionsSnapshot<S
         
         // Do nothing
         _myName = "This is my name";
+    }
+
+    public void Initialize2(IRequestContext source)
+    {
+        _myName = source.MyName;
     }
 }
