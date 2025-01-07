@@ -1,4 +1,5 @@
 using JwtExamples.Core;
+using JwtExamples.Core.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,7 @@ public class TestController(IRequestContext requestContext, ITestClass testClass
 {
     [HttpGet("hello-world")]
     [Authorize(Roles = "SuperUser335")]
+    [HasGrants("A111", "A333")]
     public IActionResult HelloWorld()
     {
         if (requestContext.IsInRole("SuperUser334"))
