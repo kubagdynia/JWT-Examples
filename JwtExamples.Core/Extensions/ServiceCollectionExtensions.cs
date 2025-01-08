@@ -27,14 +27,14 @@ public static class ServiceCollectionExtensions
             .AddJwtBearer(options =>
             {
                 options.Authority = settings.JwtSettings.Authority;
-                //options.Audience = settings.JwtSettings.Audience;
+                options.Audience = settings.JwtSettings.Audience;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.JwtSettings.Secret)),
-                    ValidateIssuer = true,
+                    ValidateIssuer = settings.JwtSettings.ValidateIssuer,
                     ValidIssuer = settings.JwtSettings.Issuer,
-                    ValidateAudience = false,
+                    ValidateAudience = settings.JwtSettings.ValidateAudience,
                     ValidAudience = settings.JwtSettings.Audience
                 };
             });

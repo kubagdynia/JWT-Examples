@@ -24,8 +24,9 @@ public class Tests
             {"TestSso:TestKey", "TestValue"},
             {"SsoSettings:JwtSettings:Secret", "secret-key-secret-key-secret-key-secret-key-secret-key-15321-15321-15321-15321"},
             {"SsoSettings:JwtSettings:Issuer", "https://localhost:5001"},
-            //{"SsoSettings:JwtSettings:Audience", "https://localhost:5001"},
+            {"SsoSettings:JwtSettings:Audience", "https://localhost:5002"},
             {"SsoSettings:JwtSettings:Authority", "https://localhost:5001"},
+            {"SsoSettings:JwtSettings:ValidateAudience", "false"},
             {"SsoSettings:MockSession:Enabled", "true"},
             {"SsoSettings:MockSession:FilePath", @"D:\Dev\MyProjects\JWT-Examples\data\mock-session.json"}
         };
