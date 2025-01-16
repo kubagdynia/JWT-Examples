@@ -35,7 +35,7 @@ internal sealed class RequestContext(HttpContext httpContext, IOptionsSnapshot<S
     /// <summary>
     /// Initializes the request context.
     /// </summary>
-    public void Initialize()
+    public async Task InitializeAsync(string value)
     {
         // Dodaj dodatkowe roszczenia
         if (httpContext.User.Identity is ClaimsIdentity claimsIdentity)
@@ -47,7 +47,7 @@ internal sealed class RequestContext(HttpContext httpContext, IOptionsSnapshot<S
         {
             if (File.Exists(settings?.Value.MockSession.FilePath))
             {
-                var json = File.ReadAllText(settings?.Value.MockSession.FilePath!);
+                var json = await File.ReadAllTextAsync(settings?.Value.MockSession.FilePath!);
                 try
                 {
                     var userSession = JsonSerializer.Deserialize<UserSession>(json, JsonSettings.JsonEnumOptions);
@@ -57,8 +57,9 @@ internal sealed class RequestContext(HttpContext httpContext, IOptionsSnapshot<S
                 {
                     throw new SsoJsonException("Error deserializing JSON input.", ex);
                 }
-                
             }
+
+            await Task.CompletedTask;
         }
         
         // Do nothing
