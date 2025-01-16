@@ -8,25 +8,25 @@ using Microsoft.Extensions.Options;
 
 namespace JwtExamples.Core;
 
-internal sealed class RequestContext(HttpContext httpContext, IOptionsSnapshot<SsoSettings>? settings) : IRequestContext, IInternalRequestContext
+internal sealed class RequestContext(IOptionsSnapshot<SsoSettings>? settings) : IRequestContext, IInternalRequestContext
 {
     private string _myName;
     public string MyName => _myName;
 
-    public string UserName
-        => httpContext.User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
-    
-    public string UserEmail
-        =>  httpContext.User.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty;
-    
-    public bool IsAuthenticated
-        => httpContext.User.Identity?.IsAuthenticated ?? false;
-    
-    public bool IsInRole(string role)
-        => httpContext.User.IsInRole(role);
-
-    public IEnumerable<Claim> Claims
-        => httpContext.User.Claims;
+    public string UserName => "UserName";
+    //     => httpContext.User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
+    //
+    public string UserEmail => "UserEmail";
+    //     =>  httpContext.User.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty;
+    //
+    public bool IsAuthenticated => true;
+    //     => httpContext.User.Identity?.IsAuthenticated ?? false;
+    //
+    public bool IsInRole(string role) => true;
+    //     => httpContext.User.IsInRole(role);
+    //
+    public IEnumerable<Claim> Claims => new List<Claim>();
+    //     => httpContext.User.Claims;
 
     public IEnumerable<string> RoleList { get; }
     public IEnumerable<string> GrantList { get; }
@@ -35,8 +35,10 @@ internal sealed class RequestContext(HttpContext httpContext, IOptionsSnapshot<S
     /// <summary>
     /// Initializes the request context.
     /// </summary>
-    public async Task InitializeAsync(string value)
+    public async Task InitializeAsync(HttpContext httpContext, string value)
     {
+        _myName = value;
+        
         // Dodaj dodatkowe roszczenia
         if (httpContext.User.Identity is ClaimsIdentity claimsIdentity)
         {
@@ -60,6 +62,7 @@ internal sealed class RequestContext(HttpContext httpContext, IOptionsSnapshot<S
             }
 
             await Task.CompletedTask;
+            return;
         }
         
         // Do nothing

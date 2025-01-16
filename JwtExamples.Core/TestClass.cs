@@ -8,5 +8,5 @@ public interface ITestClass
 internal class TestClass(IRequestContext requestContext) : ITestClass
 {
     public string GetEmail
-        => requestContext.UserEmail;
+        => requestContext.MyName;
 }

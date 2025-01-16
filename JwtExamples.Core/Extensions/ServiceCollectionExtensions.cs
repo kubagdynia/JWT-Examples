@@ -44,13 +44,14 @@ public static class ServiceCollectionExtensions
         //     var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
         //     return new RequestContextFactory().Create(httpContextAccessor);
         // });
-        services.AddScoped<IRequestContextFactory, RequestContextFactory>();
+        //services.AddScoped<IRequestContextFactory, RequestContextFactory>();
+        services.AddScoped<IRequestContext, RequestContext>();
         
-        services.AddScoped<IRequestContext>(sp =>
-        {
-            var httpContext = sp.GetRequiredService<IHttpContextAccessor>().HttpContext;
-            return httpContext?.Items[nameof(RequestContext)] as IRequestContext ?? throw new InvalidOperationException("RequestContext is not available.");
-        });
+        // services.AddScoped<IRequestContext>(sp =>
+        // {
+        //     var httpContext = sp.GetRequiredService<IHttpContextAccessor>().HttpContext;
+        //     return httpContext?.Items[nameof(RequestContext)] as IRequestContext ?? throw new InvalidOperationException("RequestContext is not available.");
+        // });
         
         //services.AddSingleton<CoreDataProviderFactory>();
         //services.AddScoped<ICoreDataProvider>(sp => sp.GetRequiredService<CoreDataProviderFactory>().Create());
