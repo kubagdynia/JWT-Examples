@@ -67,7 +67,6 @@ public static class ServiceCollectionExtensions
     public static IApplicationBuilder UseSso(this IApplicationBuilder app)
     {
         //app.UseAuthentication();
-        //app.UseMiddleware<SsoMiddleware>();
         app.UseMiddleware<RequestContextMiddleware>();
         //app.UseAuthorization();
 
