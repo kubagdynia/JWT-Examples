@@ -6,8 +6,6 @@ internal class SsoMiddleware(RequestDelegate next)
 {
     public async Task InvokeAsync(HttpContext context)
     {
-        //var dd = requestContext.UserEmail;
-        
         if (context.User.Identity?.IsAuthenticated ?? false)
         {
             var identity = context.User.Identity as ClaimsIdentity;
@@ -19,8 +17,6 @@ internal class SsoMiddleware(RequestDelegate next)
             
             identity?.AddClaims(claims);
         }
-        
-        // context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
         
         await next(context);
     }

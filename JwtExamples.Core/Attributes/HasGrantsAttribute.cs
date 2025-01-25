@@ -30,19 +30,6 @@ public class HasGrantsAttribute(params string[] grants) : Attribute, IAuthorizat
             return;
         }
 
-        // Check if there is a context element named RequestContext
-        // if (!context.HttpContext.Items.TryGetValue(nameof(RequestContext), out var httpContextItem))
-        // {
-        //     context.Result = new UnauthorizedResult();
-        //     return;
-        // }
-
-        // if (httpContextItem is not IRequestContext requestContext)
-        // {
-        //     context.Result = new UnauthorizedResult();
-        //     return;
-        // }
-
         // Sample user grants
         List<string> userGrants =
         [

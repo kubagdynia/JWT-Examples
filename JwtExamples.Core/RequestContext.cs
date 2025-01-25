@@ -14,19 +14,14 @@ internal sealed class RequestContext(IOptionsSnapshot<SsoSettings>? settings) : 
     public string MyName => _myName;
 
     public string UserName => "UserName";
-    //     => httpContext.User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
-    //
     public string UserEmail => "UserEmail";
-    //     =>  httpContext.User.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty;
-    //
+
     public bool IsAuthenticated => true;
-    //     => httpContext.User.Identity?.IsAuthenticated ?? false;
-    //
+
     public bool IsInRole(string role) => true;
-    //     => httpContext.User.IsInRole(role);
-    //
+
     public IEnumerable<Claim> Claims => new List<Claim>();
-    //     => httpContext.User.Claims;
+
 
     public IEnumerable<string> RoleList { get; }
     public IEnumerable<string> GrantList { get; }
@@ -39,7 +34,6 @@ internal sealed class RequestContext(IOptionsSnapshot<SsoSettings>? settings) : 
     {
         _myName = value;
         
-        // Dodaj dodatkowe roszczenia
         if (httpContext.User.Identity is ClaimsIdentity claimsIdentity)
         {
             claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, "SuperUser335"));
