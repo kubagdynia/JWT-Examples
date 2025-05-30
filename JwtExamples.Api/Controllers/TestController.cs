@@ -14,10 +14,6 @@ public class TestController(IRequestContext requestContext, ITestClass testClass
     [HasGrants("A111", "A333")]
     public IActionResult HelloWorld()
     {
-        var testValue = requestContext.MyName;
-        
-        var testValue2 = testClass.GetEmail;
-        
         if (requestContext.IsInRole("SuperUser334"))
         {
             string res1 = $"Hello SuperUser334, {requestContext.UserName}, {requestContext.UserEmail}";

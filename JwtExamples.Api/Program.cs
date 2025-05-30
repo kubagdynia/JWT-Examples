@@ -1,9 +1,6 @@
-using System.Text;
 using JwtExamples.Core;
 using JwtExamples.Core.Extensions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,11 +25,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-// app.Use(async (context, next) =>
-// {
-//     await context.Response.WriteAsync("TEST Hello World!");
-//     await next();
-// });
 app.UseSso();
 app.UseAuthorization();
 

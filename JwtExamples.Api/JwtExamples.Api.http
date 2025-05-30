@@ -1,6 +1,6 @@
-@JwtExamples.Api_HostAddress = http://localhost:5025
+@Api_HostAddress = http://localhost:5025
 
-GET {{JwtExamples.Api_HostAddress}}/weatherforecast/
+GET {{Api_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
